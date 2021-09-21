@@ -1,7 +1,9 @@
 package com.plantplaces;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 /**
  * Handle the /start endpoint
  * @return
@@ -9,8 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 public class PlantPlacesController {
-	@RequestMapping("/start")
-	public String start() {
+	@RequestMapping(value="/start", method=RequestMethod.GET)
+	public String read() {
+		return "start";
+	}
+	@PostMapping("/start")
+	public String create() {
 		return "start";
 	}
 	/**
