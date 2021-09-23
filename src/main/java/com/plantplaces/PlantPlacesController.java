@@ -1,11 +1,14 @@
 package com.plantplaces;
 
-import com.plantplaces.service.SpecimenServiceStub;
+import com.plantplaces.dto.SpecimenDTO;
+import com.plantplaces.service.ISpecimenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * Handle the /start endpoint
@@ -13,11 +16,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class PlantPlacesController {
 	@Autowired
-	private SpecimenServiceStub specimenServiceStub;
+	private ISpecimenService specimenServiceStub;
 
 	@RequestMapping(value = "/start", method = RequestMethod.GET)
-	public String read() {
-		specimenServiceStub.fetchBy(43);
+	public String read(Model model) {
+		SpecimenDTO specimenDTO = specimenServiceStub.fetchBy(43);
+		model.addAttribute("specimenDTO", specimenDTO);
 		return "start";
 	}
 
@@ -32,8 +36,13 @@ public class PlantPlacesController {
 	}
 
 	@RequestMapping(value = "/start", method = RequestMethod.GET, params = {"loyalty=silver"})
-	public String readSilver() {
-		return "start";
+	public ModelAndView readSilver() {
+		SpecimenDTO specimenDTO = specimenServiceStub.fetchBy(43);
+		specimenDTO.setSpecimenId(85);
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("start");
+		modelAndView.addObject("specimenDTO", specimenDTO);
+		return modelAndView;
 	}
 
 	@PostMapping("/start")
